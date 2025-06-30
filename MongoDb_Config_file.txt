@@ -1,0 +1,65 @@
+
+1. Disable security & authorization in mongod.cfg
+2. Restart mongodb service
+3. Open mongosh and put the below cmd
+
+	mongodb://localhost/
+	
+4. execute the belwo cmds
+
+use admin
+
+db.dropUser("root")
+
+db.createUser(
+	{ 
+		user: "root", 
+		pwd: passwordPrompt(), 
+		roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]
+	}
+)
+
+password: mjcadmin
+
+5. Close mongosh window
+6. Enable security & authorization in mongod.cfg
+7. Restart mongodb service
+8. Open mongosh and put the below cmd
+
+mongodb://root:root@127.0.0.1:27017/admin
+mongodb://doctorlocaluser:doctorlocalPass@127.0.0.1:27017/doctorlocal
+mongodb://doctorlocaluser:doctorlocal@127.0.0.1:27017/doctorlocal
+
+
+9. execute the belwo cmds
+
+use doctorlocal
+
+db.test.insertOne({"test":"test"});
+
+db.createUser(
+   {
+     user: "doctorlocaluser",
+     pwd: passwordPrompt(),
+     roles: [ { role: "readWrite", db: "doctorlocal" } ]
+   }
+)
+
+password: doctorlocalpass
+
+10. execute the belwo cmds
+
+use providerlocal
+
+db.test.insertOne({"test":"test"});
+
+db.createUser(
+   {
+     user: "providerlocaluser",
+     pwd: passwordPrompt(),
+     roles: [ { role: "readWrite", db: "providerlocal" } ]
+   }
+)
+
+password: providerlocalpass
+
